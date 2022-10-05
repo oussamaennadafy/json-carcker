@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.object-parent-circle {
+  @apply w-12 h-12 bg-slate-200 rounded-full inline-block border border-gray-100;
+}
+.Layer-element {
+ @apply flex flex-col;
+}
+.subLayer-element {
+  @apply flex items-center gap-4 w-full mb-2;
+}
+.title {
+  @apply flex items-center justify-center text-center bg-slate-600 text-gray-100 rounded m-3 px-3 py-2;
+}
+body {
+  font-size: max(12px, 1.2vw);
+}
+.values {
+ @apply px-4 py-2 bg-slate-400 text-gray-100 rounded inline-block border border-gray-600;
+}
+.circle {
+  @apply w-10 h-10 bg-slate-200 rounded-full inline-block border border-gray-100;
+}
