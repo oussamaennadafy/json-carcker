@@ -11,17 +11,17 @@
  @apply flex flex-col;
 }
 .subLayer-element {
-  @apply flex items-center gap-4 w-full mb-2;
+  @apply flex items-center gap-4 w-full mb-2 grow;
 }
 .title {
-  @apply flex items-center justify-center text-center bg-slate-600 text-gray-100 rounded m-3 px-3 py-2;
+  @apply flex items-center justify-center text-center border border-gray-600 hover:border-gray-400 transition-all bg-[#2b2c3e] cursor-pointer text-[#faa81a] rounded m-3 px-3 py-2;
 }
-body {
+#mainEl {
   font-size: max(12px, 1.2vw);
 }
 .values {
- @apply px-4 py-2 bg-slate-400 text-gray-100 rounded inline-block border border-gray-600;
+ @apply px-4 py-2 rounded inline-block border border-gray-600 hover:border-gray-400 transition-all bg-[#2b2c3e] cursor-pointer;
 }
 .circle {
-  @apply w-10 h-10 bg-slate-200 rounded-full inline-block border border-gray-100;
+  @apply w-10 h-10 rounded-full bg-[#2b2c3e] inline-block border border-gray-600 hover:border-gray-400;
 }

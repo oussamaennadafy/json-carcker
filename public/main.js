@@ -19,6 +19,8 @@ jsonInput.addEventListener("keyup", function () {
     ///////////////////////solve the problem////////////////////////////////
     const tree = JSONCracker(JSON.parse(this.value));
     treeTOhtml(tree);
+  } else {
+    mainElement.innerHTML = '';
   }
   //make json valid otherwise
   invalidJson.classList.add("hidden");
@@ -40,24 +42,16 @@ function JSONCracker(object) {
     return result;
   }
   // get the element type
-  function typeOfElement(element, strictComparison) {
-    let boolean = true;
-    if (strictComparison) {
-      boolean = !Array.isArray(element);
-    }
-    if (typeof element === "object" && element !== null && boolean) {
-      return "object";
-    } else if (Array.isArray(element)) {
-      return "array";
-    } else {
-      return "primitive";
-    }
+  function typeOfElement(element, strictComparison = false) {
+    if (strictComparison && Array.isArray(element)) return "array";
+    if (typeof element === "object" && element !== null) return "object";
+    else return "primitive";
   }
   // set infos
   function setInfos(object, parent) {
     for (const key in object) {
       const element = object[key];
-      if (typeOfElement(element, false) === "object") {
+      if (typeOfElement(element) === "object") {
         element["parent"] = parent;
         element["type"] = typeOfElement(element, true);
         // element["title"] = key;
@@ -73,7 +67,7 @@ function JSONCracker(object) {
     if (i === 1) {
       setInfos(object, "1.1");
       tree["1"] = {
-        1.1: {
+        "1.1": {
           values: getDataType(object, "primitive"),
         },
       };
@@ -92,14 +86,7 @@ function JSONCracker(object) {
             [obj2[key1]] = Object.values(helper);
           }
         }
-        let values;
-        if (typeOfElement(element, true) === "array") {
-          values = {
-            ...getDataType(element, "primitive"),
-          };
-        } else {
-          values = getDataType(element, "primitive");
-        }
+        let values = getDataType(element, "primitive");
         setInfos(element, ij);
         tree[i][ij] = {
           parent: element.parent,
@@ -149,12 +136,19 @@ function treeTOhtml(tree) {
       const valuesList = document.querySelectorAll(`.values`);
       const values = valuesList[valuesList.length - 1];
       //check if box is empty and make it circul
-      if(ele.values) values.classList.remove('circle');
+      if (ele.values) values.classList.remove("circle");
       for (const key3 in ele.values) {
         const el = ele.values[key3];
+        // color data based of types
+        let valueColor = "";
+        if(typeof el === 'string' || el === null) valueColor = "text-[#dcddde]"
+        if(typeof el === 'boolean') valueColor = "text-purple-900"
+        if(typeof el === 'number') valueColor = "text-[#fd0079]"
+        if(el === true) valueColor = "text-[#46c46e]"
+        if(el === false) valueColor = "text-[#db662e]"
         values.insertAdjacentHTML(
           "beforeend",
-          `<p class=box ><span class=objectKey >${key3} :</span><span class=objectValue > ${el}</span></p>`
+          `<p class=box ><span class="objectKey text-[#59b8ff]">${key3} :</span><span class="objectValue ${valueColor}" > ${el}</span></p>`
         );
       }
     }
