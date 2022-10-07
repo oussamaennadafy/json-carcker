@@ -1,5 +1,5 @@
 "use strict";
-
+// dom elements
 const validJson = document.getElementById("valid_json");
 const invalidJson = document.getElementById("invalid_json");
 const jsonInput = document.getElementById("json_input");
@@ -20,7 +20,7 @@ jsonInput.addEventListener("keyup", function () {
     const tree = JSONCracker(JSON.parse(this.value));
     treeTOhtml(tree);
   } else {
-    mainElement.innerHTML = '';
+    mainElement.innerHTML = "";
   }
   //make json valid otherwise
   invalidJson.classList.add("hidden");
@@ -28,7 +28,13 @@ jsonInput.addEventListener("keyup", function () {
 });
 
 function JSONCracker(object) {
-  // get the chosen data type
+  // get the element type
+  function typeOfElement(element, strictComparison = false) {
+    if (strictComparison && Array.isArray(element)) return "array";
+    if (typeof element === "object" && element !== null) return "object";
+    else return "primitive";
+  }
+  // get the chosen data type or filter object
   function getDataType(object, type, strict) {
     const result = {};
     for (const key in object) {
@@ -41,13 +47,7 @@ function JSONCracker(object) {
     if (!Object.keys(result).length) return false;
     return result;
   }
-  // get the element type
-  function typeOfElement(element, strictComparison = false) {
-    if (strictComparison && Array.isArray(element)) return "array";
-    if (typeof element === "object" && element !== null) return "object";
-    else return "primitive";
-  }
-  // set infos
+  // set infos (give childs name of parent)
   function setInfos(object, parent) {
     for (const key in object) {
       const element = object[key];
@@ -64,10 +64,11 @@ function JSONCracker(object) {
   let j = 1;
   //main function to build tree object
   function main(object) {
+    // happend at the first time
     if (i === 1) {
       setInfos(object, "1.1");
       tree["1"] = {
-        "1.1": {
+        1.1: {
           values: getDataType(object, "primitive"),
         },
       };
@@ -141,11 +142,12 @@ function treeTOhtml(tree) {
         const el = ele.values[key3];
         // color data based of types
         let valueColor = "";
-        if(typeof el === 'string' || el === null) valueColor = "text-[#dcddde]"
-        if(typeof el === 'boolean') valueColor = "text-purple-900"
-        if(typeof el === 'number') valueColor = "text-[#fd0079]"
-        if(el === true) valueColor = "text-[#46c46e]"
-        if(el === false) valueColor = "text-[#db662e]"
+        if (typeof el === "string" || el === null)
+          valueColor = "text-[#dcddde]";
+        if (typeof el === "boolean") valueColor = "text-purple-900";
+        if (typeof el === "number") valueColor = "text-[#fd0079]";
+        if (el === true) valueColor = "text-[#46c46e]";
+        if (el === false) valueColor = "text-[#db662e]";
         values.insertAdjacentHTML(
           "beforeend",
           `<p class=box ><span class="objectKey text-[#59b8ff]">${key3} :</span><span class="objectValue ${valueColor}" > ${el}</span></p>`
